@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LOGIXA — World's Best 3D eLearning Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --dark:  #0A1E02;
+  --green: #173404;
+  --brand: #639922;
+  --light: #97C459;
+  --cream: #EAF3DE;
+  --white: #F7F9F3;
+  --gray:  #8A9B80;
+  --accent: #4CAF50;
+  --font-d: 'Syne', sans-serif;
+  --font-b: 'DM Sans', sans-serif;
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-b);
+  background:linear-gradient(135deg, var(--white) 0%, var(--cream) 100%);
+  color:var(--green);overflow-x:hidden;
+}
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--cream);}
+::-webkit-scrollbar-thumb{background:var(--brand);border-radius:6px;}
+
+/* ══════════════════════════════════════════
+   CUSTOM CURSOR SYSTEM
+══════════════════════════════════════════ */
+#cursorDot {
+  pointer-events: none;
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: var(--brand);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  box-shadow: 0 0 8px rgba(99,153,34,0.6);
+}
+
+#cursorRing {
+  pointer-events: none;
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(151,196,89,0.8);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
+}
+
+.cursor-glow{
+  pointer-events:none;position:fixed;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(99,153,34,0.08) 0%,transparent 70%);
+  transform:translate(-50%,-50%);transition:all 0.1s ease-out;z-index:0;
+}
+
+/* Cursor hover states */
+.cursor-hover #cursorDot {
+  width: 12px;
+  height: 12px;
+  background: var(--light);
+  box-shadow: 0 0 15px rgba(151,196,89,0.8);
+}
+
+.cursor-hover #cursorRing {
+  width: 52px;
+  height: 52px;
+  border-color: var(--light);
+  background: rgba(151,196,89,0.1);
+}
+
+/* Cursor click state */
+.cursor-click #cursorDot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+}
+
+.cursor-click #cursorRing {
+  width: 28px;
+  height: 28px;
+  border-color: var(--accent);
+}
+
+/* ── PREMIUM LOADING SCREEN ── */
+#loader{
+  position:fixed;inset:0;background:var(--dark);z-index:9999;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:30px;
+  transition:opacity 0.6s,visibility 0.6s;
+}
+#loader.hidden{opacity:0;visibility:hidden;}
+.loader-logo{
+  font-family:var(--font-d);font-size:48px;font-weight:800;letter-spacing:6px;
+  color:var(--cream);animation:logoGlow 2s ease-in-out infinite alternate;
+}
+@keyframes logoGlow{0%{text-shadow:0 0 20px var(--brand)}100%{text-shadow:0 0 40px var(--light), 0 0 60px var(--brand)}}
+.loader-bar{width:250px;height:4px;background:rgba(234,243,222,0.1);border-radius:4px;overflow:hidden;}
+.loader-fill{height:100%;background:linear-gradient(90deg,var(--brand),var(--light));border-radius:4px;animation:loadFill 2s ease forwards;}
+@keyframes loadFill{from{width:0}to{width:100%}}
+.loader-text{font-size:12px;letter-spacing:4px;color:var(--gray);text-transform:uppercase;}
+
+/* ══ ENHANCED NAV ══ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 60px;
+  background:rgba(247,249,243,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(99,153,34,0.12);
+  transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:0 4px 20px rgba(23,52,4,0.05);
+}
+nav.scrolled{
+  padding:14px 60px;
+  background:rgba(247,249,243,0.95);
+  box-shadow:0 8px 30px rgba(23,52,4,0.1);
+}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-icon{
+  width:42px;height:42px;
+  background:linear-gradient(135deg, var(--green), var(--brand));
+  border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:transform 0.4s;transform-style:preserve-3d;
+  box-shadow:0 6px 0 rgba(10,30,2,0.4), 0 10px 20px rgba(10,30,2,0.2);
+}
+.nav-logo:hover .nav-icon{
+  transform:rotateY(25deg) rotateX(-15deg) scale(1.05) translateY(-2px);
+  box-shadow:0 10px 0 rgba(10,30,2,0.4), 0 16px 30px rgba(10,30,2,0.3);
+}
+.nav-brand{font-family:var(--font-d);font-size:22px;font-weight:800;letter-spacing:3px;color:var(--green);}
+.nav-links{display:flex;align-items:center;gap:36px;}
+.nav-links a{
+  font-size:12px;letter-spacing:1.5px;font-weight:600;text-transform:uppercase;
+  color:var(--gray);text-decoration:none;transition:all 0.3s;
+  position:relative;padding-bottom:4px;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:0;width:0;height:2px;
+  background:linear-gradient(90deg,var(--brand),var(--light));
+  transition:width 0.3s ease;
+}
+.nav-links a:hover{color:var(--green);transform:translateY(-1px);}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%;}
+.nav-links a.active{color:var(--green);}
+.nav-cta{
+  background:linear-gradient(135deg, var(--brand), var(--accent))!important;
+  color:var(--white)!important;
+  padding:12px 24px!important;border-radius:8px;letter-spacing:1.5px!important;
+  font-size:12px!important;transition:all 0.3s!important;
+  box-shadow:0 4px 0 rgba(10,30,2,0.4), 0 8px 16px rgba(99,153,34,0.3)!important;
+}
+.nav-cta::after{display:none!important;}
+.nav-cta:hover{
+  transform:translateY(-2px) scale(1.02)!important;
+  box-shadow:0 6px 0 rgba(10,30,2,0.4), 0 12px 24px rgba(99,153,34,0.4)!important;
+}
+
+section{display:none;animation:fadeInPage 0.6s ease forwards;}
+section.active{display:block;}
+@keyframes fadeInPage{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══════════════════════
+   ENHANCED HOME
+══════════════════════ */
+#home{min-height:100vh;}
+
+/* ── HERO SECTION ── */
+.hero{
+  min-height:100vh;display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;padding:120px 0 60px;
+}
+.hero-left{padding:60px;animation:fadeInUp 0.8s ease both;}
+
+.hero-tag{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--cream);border:1px solid rgba(99,153,34,0.25);
+  padding:8px 18px;border-radius:100px;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--brand);font-weight:600;margin-bottom:30px;
+  box-shadow:0 4px 12px rgba(99,153,34,0.1);
+}
+.hero-tag .pulse-dot{
+  width:8px;height:8px;border-radius:50%;background:var(--brand);
+  animation:pulse 2s infinite;box-shadow:0 0 12px var(--brand);
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.2)}}
+
+.hero h1{
+  font-family:var(--font-d);
+  font-size:clamp(42px,5.5vw,68px);font-weight:800;line-height:1.05;
+  letter-spacing:-1.5px;color:var(--green);margin-bottom:24px;
+}
+.hero h1 em{
+  font-style:normal;background:linear-gradient(135deg,var(--brand),var(--light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;position:relative;
+}
+.hero h1 em::after{
+  content:'';position:absolute;bottom:-4px;left:0;width:100%;height:3px;
+  background:linear-gradient(90deg,var(--brand),var(--light));
+  border-radius:2px;opacity:0.6;
+}
+
+.hero>div>p{
+  font-size:17px;line-height:1.75;color:var(--gray);max-width:480px;
+  margin-bottom:40px;font-weight:400;
+}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:50px;}
+
+/* ── 3D BUTTONS ── */
+.btn-primary{
+  background:linear-gradient(135deg, var(--green), var(--dark));
+  color:var(--cream);padding:16px 32px;border-radius:10px;text-decoration:none;
+  font-size:12px;letter-spacing:2px;font-weight:600;text-transform:uppercase;
+  transition:all 0.3s;display:inline-flex;align-items:center;gap:10px;
+  box-shadow:0 8px 0 #051201, 0 12px 24px rgba(10,30,2,0.4);
+  transform:translateY(0);position:relative;overflow:hidden;
+}
+.btn-primary::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.1),transparent);
+  border-radius:10px;
+}
+.btn-primary:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 0 #051201, 0 18px 36px rgba(10,30,2,0.5);
+}
+.btn-primary:active{transform:translateY(2px);box-shadow:0 6px 0 #051201;}
+
+.btn-secondary{
+  background:rgba(255,255,255,0.8);backdrop-filter:blur(10px);
+  border:2px solid rgba(99,153,34,0.2);color:var(--green);
+  padding:16px 32px;border-radius:10px;text-decoration:none;
+  font-size:12px;letter-spacing:2px;font-weight:600;text-transform:uppercase;
+  transition:all 0.3s;
+}
+.btn-secondary:hover{
+  border-color:var(--brand);background:var(--cream);
+  transform:translateY(-3px);box-shadow:0 8px 20px rgba(99,153,34,0.15);
+}
+
+/* ── HERO METRICS ── */
+.hero-metrics{
+  display:flex;gap:32px;padding-top:24px;
+  border-top:1px solid rgba(23,52,4,0.1);
+}
+.metric{display:flex;flex-direction:column;gap:4px;}
+.metric-num{
+  font-family:var(--font-d);font-size:28px;font-weight:800;
+  color:var(--green);line-height:1;
+}
+.metric-label{
+  font-size:10px;letter-spacing:2px;color:var(--gray);
+  text-transform:uppercase;font-weight:500;
+}
+
+/* ── ENHANCED 3D HERO RIGHT ── */
+.hero-right{
+  height:100vh;position:relative;overflow:hidden;
+  background:radial-gradient(circle at center, #1a4006 0%, var(--dark) 100%);
+  animation:fadeIn 1s ease 0.3s both;perspective:1200px;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* Animated Grid Background */
+.hero-right::before{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(99,153,34,0.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(99,153,34,0.08) 1px,transparent 1px);
+  background-size:40px 40px;
+  animation:gridMove 20s linear infinite;opacity:0.6;
+}
+@keyframes gridMove{from{background-position:0 0}to{background-position:40px 40px}}
+
+/* ── ORBITAL RINGS SYSTEM ── */
+.orbital-system{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  transform-style:preserve-3d;
+}
+.orbit{
+  position:absolute;border-radius:50%;border:1px solid;
+  transform-style:preserve-3d;
+}
+.orbit-1{
+  width:350px;height:350px;
+  border-color:rgba(151,196,89,0.3);
+  animation:orbitSpin 25s linear infinite;
+}
+.orbit-2{
+  width:480px;height:480px;
+  border-color:rgba(99,153,34,0.2);border-style:dashed;
+  animation:orbitSpinReverse 35s linear infinite;
+}
+.orbit-3{
+  width:600px;height:600px;
+  border-color:rgba(234,243,222,0.1);border-width:2px;
+  animation:orbitSpin 45s linear infinite;
+}
+@keyframes orbitSpin{
+  0%{transform:rotateX(60deg) rotateZ(0deg)}
+  100%{transform:rotateX(60deg) rotateZ(360deg)}
+}
+@keyframes orbitSpinReverse{
+  0%{transform:rotateX(70deg) rotateY(20deg) rotateZ(360deg)}
+  100%{transform:rotateX(70deg) rotateY(20deg) rotateZ(0deg)}
+}
+
+.orbit-dot{
+  position:absolute;width:10px;height:10px;border-radius:50%;
+  background:var(--light);box-shadow:0 0 20px var(--light);
+  top:-5px;left:50%;transform:translateX(-50%);
+}
+.orbit-dot-2{
+  background:var(--brand);box-shadow:0 0 20px var(--brand);
+  top:50%;left:-5px;transform:translateY(-50%);
+}
+
+/* ── ENHANCED 3D CUBE ── */
+.hero-3d-scene{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  transform-style:preserve-3d;z-index:10;
+}
+.cube-wrap{
+  position:relative;width:200px;height:200px;
+  transform-style:preserve-3d;
+  animation:rotateCube 16s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+@keyframes rotateCube{
+  0%{transform:rotateX(-20deg) rotateY(0deg) translateY(0)}
+  25%{transform:rotateX(10deg) rotateY(90deg) translateY(-10px)}
+  50%{transform:rotateX(-10deg) rotateY(180deg) translateY(5px)}
+  75%{transform:rotateX(15deg) rotateY(270deg) translateY(-5px)}
+  100%{transform:rotateX(-20deg) rotateY(360deg) translateY(0)}
+}
+
+.cube-face{
+  position:absolute;width:200px;height:200px;
+  border:2px solid rgba(99,153,34,0.6);
+  background:rgba(13,38,3,0.8);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);
+  box-shadow:
+    inset 0 0 30px rgba(99,153,34,0.2),
+    0 0 30px rgba(99,153,34,0.4);
+  transition:all 0.4s;
+}
+.cube-face:hover{
+  background:rgba(99,153,34,0.3);
+  box-shadow:
+    inset 0 0 50px rgba(151,196,89,0.4),
+    0 0 50px rgba(151,196,89,0.6);
+}
+
+.cube-face.front{transform:translateZ(100px);}
+.cube-face.back{transform:rotateY(180deg) translateZ(100px);}
+.cube-face.right{transform:rotateY(90deg) translateZ(100px);}
+.cube-face.left{transform:rotateY(-90deg) translateZ(100px);}
+.cube-face.top{transform:rotateX(90deg) translateZ(100px);}
+.cube-face.bottom{transform:rotateX(-90deg) translateZ(100px);}
+
+.face-content{text-align:center;position:relative;z-index:2;}
+.face-content .fname{
+  font-size:22px;font-weight:800;letter-spacing:2px;
+  color:var(--white);text-shadow:0 0 15px rgba(255,255,255,0.5);
+  margin-bottom:6px;
+}
+.face-content .ftag{
+  font-size:9px;letter-spacing:3px;color:var(--light);
+  text-transform:uppercase;opacity:0.8;
+}
+
+/* ── PREMIUM FLOATING CARDS ── */
+.float-card{
+  position:absolute;
+  background:linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.2);
+  border-radius:16px;padding:18px 22px;color:var(--white);
+  transform-style:preserve-3d;z-index:20;
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+  min-width:200px;
+}
+.float-card-1{
+  top:18%;right:40px;
+  animation:floatCard1 6s ease-in-out infinite;
+}
+.float-card-2{
+  top:55%;left:30px;
+  animation:floatCard2 7s ease-in-out infinite;
+}
+.float-card-3{
+  bottom:25%;right:50px;
+  animation:floatCard3 8s ease-in-out infinite;
+}
+
+@keyframes floatCard1{
+  0%,100%{transform:translateY(0) rotateY(-8deg) rotateX(4deg)}
+  50%{transform:translateY(-15px) rotateY(8deg) rotateX(-4deg)}
+}
+@keyframes floatCard2{
+  0%,100%{transform:translateY(0) rotateY(8deg) rotateX(-3deg)}
+  50%{transform:translateY(15px) rotateY(-8deg) rotateX(3deg)}
+}
+@keyframes floatCard3{
+  0%,100%{transform:translateY(0) rotateY(-6deg) rotateX(5deg)}
+  50%{transform:translateY(-10px) rotateY(6deg) rotateX(-5deg)}
+}
+
+.card-header{
+  display:flex;align-items:center;gap:12px;margin-bottom:10px;
+}
+.card-icon{
+  width:32px;height:32px;background:rgba(99,153,34,0.3);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(99,153,34,0.5);flex-shrink:0;
+}
+.card-title{
+  font-family:var(--font-d);font-size:13px;font-weight:700;
+  color:var(--white);line-height:1.2;
+}
+.card-desc{
+  font-size:11px;color:rgba(234,243,222,0.7);line-height:1.4;
+  margin-top:8px;
+}
+.card-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(99,153,34,0.2);border:1px solid rgba(99,153,34,0.4);
+  padding:4px 10px;border-radius:100px;font-size:9px;
+  color:var(--light);text-transform:uppercase;font-weight:600;
+  margin-top:10px;letter-spacing:1px;
+}
+.badge-dot{
+  width:5px;height:5px;border-radius:50%;background:var(--light);
+  animation:blink 1.5s infinite;
+}
+
+/* ── HERO STATS BAR ── */
+.hero-stats{
+  position:absolute;bottom:0;left:0;right:0;
+  display:flex;background:rgba(5,18,1,0.6);backdrop-filter:blur(12px);
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+.stat{
+  flex:1;text-align:center;border-right:1px solid rgba(255,255,255,0.1);
+  padding:22px 12px;transition:all 0.3s;
+  position:relative;overflow:hidden;
+}
+.stat::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(99,153,34,0.2),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.stat:hover::before{opacity:1;}
+.stat:hover{transform:translateY(-2px);}
+.stat:last-child{border-right:none;}
+.stat-num{
+  font-family:var(--font-d);font-size:32px;font-weight:800;
+  color:var(--white);text-shadow:0 0 15px rgba(255,255,255,0.3);
+}
+.stat-label{
+  font-size:10px;letter-spacing:2.5px;color:var(--light);
+  text-transform:uppercase;margin-top:4px;font-weight:600;
+}
+
+/* ── TOOLS STRIP ── */
+.tools-strip{
+  background:var(--green);padding:20px 60px;
+  display:flex;align-items:center;gap:20px;overflow:hidden;
+  border-top:3px solid var(--brand);border-bottom:3px solid var(--brand);
+  position:relative;
+}
+.tools-strip::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(99,153,34,0.1),transparent);
+}
+.tools-label{
+  font-size:11px;letter-spacing:4px;color:var(--light);
+  text-transform:uppercase;white-space:nowrap;margin-right:20px;
+  font-weight:700;position:relative;z-index:1;
+}
+.tools-list{display:flex;gap:32px;align-items:center;flex-wrap:wrap;}
+.tool-tag{
+  font-family:var(--font-d);font-size:13px;font-weight:700;
+  color:var(--white);opacity:0.6;letter-spacing:1px;white-space:nowrap;
+  transition:all 0.3s;position:relative;z-index:1;
+}
+.tool-tag:hover{
+  opacity:1;transform:scale(1.05);color:var(--light);
+  text-shadow:0 0 10px var(--light);
+}
+.tool-sep{color:var(--brand);font-size:16px;opacity:0.6;}
+
+/* ── SECTION STYLING ── */
+.section-label{
+  font-size:11px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--white);background:var(--brand);
+  padding:8px 18px;border-radius:100px;margin-bottom:16px;
+  font-weight:700;display:inline-block;
+  box-shadow:0 4px 12px rgba(99,153,34,0.3);
+}
+.section-title{
+  font-family:var(--font-d);font-size:clamp(28px,4vw,44px);
+  font-weight:800;line-height:1.1;margin-bottom:16px;letter-spacing:-0.5px;
+}
+.section-desc{
+  font-size:16px;color:var(--gray);line-height:1.7;font-weight:400;
+  max-width:580px;margin-bottom:60px;
+}
+
+/* ── ENHANCED SERVICES PREVIEW ── */
+.services-preview{
+  padding:120px 60px;
+  background:linear-gradient(180deg, var(--white) 0%, var(--cream) 100%);
+  position:relative;
+}
+.services-preview::before{
+  content:'';position:absolute;top:0;left:60px;right:60px;height:2px;
+  background:linear-gradient(90deg,transparent,var(--brand),transparent);
+}
+
+.services-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:28px;
+  margin-bottom:60px;
+}
+
+.service-card{
+  background:var(--white);border-radius:20px;padding:36px 30px;
+  border:1px solid rgba(99,153,34,0.12);
+  transition:all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style:preserve-3d;perspective:1000px;
+  position:relative;overflow:hidden;
+  box-shadow:0 8px 30px rgba(13,38,3,0.06);
+}
+.service-card::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:4px;
+  background:linear-gradient(90deg,var(--brand),var(--light));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform 0.4s ease;
+}
+.service-card:hover::before{transform:scaleX(1);}
+.service-card::after{
+  content:'';position:absolute;inset:0;border-radius:20px;
+  background:radial-gradient(circle at top right, rgba(99,153,34,0.08), transparent 70%);
+  opacity:0;transition:opacity 0.4s;pointer-events:none;
+}
+.service-card:hover::after{opacity:1;}
+.service-card:hover{
+  transform:translateY(-12px) rotateX(5deg) rotateY(-3deg);
+  box-shadow:
+    0 25px 50px rgba(13,38,3,0.15),
+    0 0 0 1px rgba(99,153,34,0.2);
+  border-color:rgba(99,153,34,0.3);
+}
+
+.service-icon{
+  width:56px;height:56px;
+  background:linear-gradient(135deg, var(--green), var(--brand));
+  border-radius:14px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:24px;
+  box-shadow:0 8px 0 rgba(10,30,2,0.3), 0 12px 24px rgba(10,30,2,0.2);
+  transition:transform 0.4s;
+}
+.service-card:hover .service-icon{
+  transform:translateZ(20px) rotateY(15deg);
+}
+
+.service-num{
+  font-family:var(--font-d);font-size:12px;color:var(--gray);
+  letter-spacing:2px;margin-bottom:12px;font-weight:700;
+  text-transform:uppercase;
+}
+.service-card h3{
+  font-family:var(--font-d);font-size:18px;font-weight:800;
+  margin-bottom:12px;transition:all 0.4s;line-height:1.3;
+}
+.service-card:hover h3{
+  transform:translateZ(15px);color:var(--brand);
+}
+.service-card p{
+  font-size:14px;line-height:1.65;color:var(--gray);
+  transition:transform 0.4s;
+}
+.service-card:hover p{
+  transform:translateZ(10px);
+}
+
+.service-arrow{
+  position:absolute;bottom:24px;right:24px;
+  width:36px;height:36px;border-radius:50%;
+  background:var(--brand);display:flex;align-items:center;justify-content:center;
+  opacity:0;transform:translateY(10px) scale(0.8);
+  transition:all 0.4s;
+  box-shadow:0 4px 0 rgba(10,30,2,0.4);
+}
+.service-card:hover .service-arrow{
+  opacity:1;transform:translateY(0) scale(1);
+}
+.service-arrow svg{width:16px;height:16px;stroke:var(--white);fill:none;}
+
+/* ── WHY US SECTION ── */
+.why-us{
+  padding:120px 60px;background:var(--green);position:relative;overflow:hidden;
+}
+.why-us::before{
+  content:'';position:absolute;width:600px;height:600px;
+  background:radial-gradient(circle, rgba(99,153,34,0.2) 0%, transparent 70%);
+  top:-300px;right:-300px;border-radius:50%;
+}
+.why-us .section-label{background:var(--light);color:var(--green);}
+.why-us .section-title{color:var(--white);}
+.why-us .section-desc{color:rgba(234,243,222,0.7);}
+
+.why-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+  background:rgba(255,255,255,0.05);border-radius:20px;overflow:hidden;
+  border:1px solid rgba(255,255,255,0.1);
+}
+.why-item{
+  padding:36px;background:rgba(13,38,3,0.6);backdrop-filter:blur(10px);
+  transition:all 0.4s;transform-style:preserve-3d;
+  position:relative;
+}
+.why-item:hover{
+  background:rgba(99,153,34,0.25);
+  transform:translateZ(15px) scale(1.02);
+  box-shadow:0 20px 40px rgba(0,0,0,0.4);
+  z-index:10;border-radius:10px;
+}
+.why-num{
+  font-family:var(--font-d);font-size:44px;font-weight:800;
+  color:transparent;-webkit-text-stroke:1px var(--brand);
+  margin-bottom:16px;transition:all 0.3s;line-height:1;
+}
+.why-item:hover .why-num{
+  color:var(--light);-webkit-text-stroke:0;
+  text-shadow:0 0 20px var(--brand);
+}
+.why-item h4{
+  color:var(--white);font-family:var(--font-d);
+  font-size:16px;font-weight:700;margin-bottom:10px;
+}
+.why-item p{
+  color:rgba(234,243,222,0.8);font-size:13px;line-height:1.7;
+}
+
+/* ── PROCESS SECTION ── */
+.process{padding:120px 60px;}
+.process-steps{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  position:relative;margin-top:60px;
+}
+.process-line{
+  position:absolute;top:36px;left:calc(12.5%);right:calc(12.5%);
+  height:2px;
+  background:linear-gradient(90deg,transparent,var(--brand) 20%,var(--brand) 80%,transparent);
+  z-index:0;
+}
+.process-step{text-align:center;padding:0 24px;position:relative;z-index:2;}
+.step-circle{
+  width:72px;height:72px;border-radius:50%;background:var(--white);
+  border:3px solid rgba(99,153,34,0.3);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 24px;
+  font-family:var(--font-d);font-weight:800;font-size:20px;color:var(--brand);
+  position:relative;z-index:1;transition:all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style:preserve-3d;
+  box-shadow:
+    0 8px 0 rgba(99,153,34,0.2),
+    0 12px 24px rgba(23,52,4,0.08);
+}
+.process-step:hover .step-circle{
+  background:linear-gradient(135deg,var(--brand),var(--light));
+  color:var(--white);
+  transform:translateY(-8px) rotateX(20deg) scale(1.05);
+  box-shadow:
+    0 16px 0 rgba(23,52,4,0.3),
+    0 24px 48px rgba(99,153,34,0.3);
+  border-color:var(--brand);
+}
+.process-step h4{
+  font-family:var(--font-d);font-size:16px;font-weight:700;
+  margin-bottom:10px;
+}
+.process-step p{
+  font-size:13px;color:var(--gray);line-height:1.6;
+}
+
+/* ── CTA BANNER ── */
+.cta-banner{
+  margin:80px 60px 120px;
+  background:linear-gradient(135deg, var(--green) 0%, var(--dark) 100%);
+  border-radius:24px;padding:70px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:40px;flex-wrap:wrap;position:relative;overflow:hidden;
+  transform-style:preserve-3d;
+  box-shadow:
+    0 24px 0 rgba(5,18,1,0.4),
+    0 32px 64px rgba(5,18,1,0.3),
+    inset 0 0 0 2px rgba(99,153,34,0.2);
+}
+.cta-banner::before{
+  content:'';position:absolute;width:400px;height:400px;
+  background:radial-gradient(circle, rgba(99,153,34,0.3) 0%, transparent 70%);
+  top:-150px;right:-100px;border-radius:50%;
+  animation:ctaPulse 4s ease-in-out infinite alternate;
+}
+@keyframes ctaPulse{
+  0%{transform:scale(1);opacity:0.5}
+  100%{transform:scale(1.2);opacity:1}
+}
+.cta-content{position:relative;z-index:1;}
+.cta-banner h2{
+  font-family:var(--font-d);font-size:clamp(24px,3vw,36px);
+  font-weight:800;color:var(--white);max-width:480px;
+  line-height:1.2;margin-bottom:12px;
+}
+.cta-banner p{
+  color:rgba(234,243,222,0.8);font-size:16px;line-height:1.6;
+}
+.cta-actions{
+  display:flex;flex-direction:column;align-items:flex-end;
+  gap:16px;position:relative;z-index:1;
+}
+
+/* ── CEO BADGE ── */
+.ceo-badge{
+  display:flex;align-items:center;gap:14px;
+  background:rgba(255,255,255,0.05);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.1);
+  padding:12px 20px;border-radius:100px;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+.ceo-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--brand),var(--light));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-weight:800;font-size:14px;
+  color:var(--white);box-shadow:0 0 15px var(--brand);
+}
+.ceo-info{font-size:12px;}
+.ceo-info strong{
+  display:block;color:var(--white);font-family:var(--font-d);
+  font-size:13px;letter-spacing:0.5px;
+}
+.ceo-info span{
+  color:var(--light);font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+/* ══════════════════════
+   ABOUT
+══════════════════════ */
+#about{min-height:100vh;padding-top:100px;}
+.page-hero{
+  padding:80px 60px 60px;position:relative;overflow:hidden;
+}
+.page-hero::before{
+  content:'';position:absolute;top:-100px;right:-100px;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(99,153,34,0.06),transparent);
+}
+.page-hero h1{
+  font-family:var(--font-d);font-size:clamp(34px,5vw,62px);
+  font-weight:800;letter-spacing:-1.5px;line-height:1.03;margin-bottom:18px;
+}
+.page-hero h1 em{font-style:normal;color:var(--brand);}
+.page-hero p{
+  font-size:17px;color:var(--gray);max-width:580px;
+  line-height:1.75;font-weight:400;
+}
+
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:60px;
+  padding:60px;align-items:start;
+}
+.about-text h2{
+  font-family:var(--font-d);font-size:28px;font-weight:800;
+  margin-bottom:16px;
+}
+.about-text p{
+  font-size:15px;line-height:1.8;color:var(--gray);margin-bottom:16px;
+}
+
+/* ── 3D CEO CARD ── */
+.ceo-card{
+  background:linear-gradient(135deg, var(--green) 0%, var(--dark) 100%);
+  border-radius:24px;padding:44px;color:var(--cream);
+  position:relative;overflow:hidden;
+  transform-style:preserve-3d;perspective:800px;
+  transition:transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),box-shadow 0.5s;
+  box-shadow:
+    0 20px 0 rgba(5,18,1,0.4),
+    0 28px 56px rgba(5,18,1,0.3);
+}
+.ceo-card:hover{
+  transform:translateY(-8px) rotateX(4deg) rotateY(-2deg);
+  box-shadow:
+    0 28px 0 rgba(5,18,1,0.4),
+    0 40px 80px rgba(5,18,1,0.4);
+}
+.ceo-card::before{
+  content:'';position:absolute;width:300px;height:300px;
+  background:radial-gradient(circle,rgba(99,153,34,0.25),transparent);
+  top:-100px;right:-80px;border-radius:50%;
+}
+.ceo-card .big-letter{
+  font-family:var(--font-d);font-size:120px;font-weight:800;
+  color:rgba(234,243,222,0.03);position:absolute;
+  bottom:-10px;right:16px;line-height:1;pointer-events:none;
+}
+.ceo-avatar-lg{
+  width:64px;height:64px;border-radius:50%;
+  background:linear-gradient(135deg,var(--brand),var(--light));
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-weight:800;font-size:24px;
+  color:var(--white);margin-bottom:20px;position:relative;
+  box-shadow:
+    0 6px 0 rgba(5,18,1,0.4),
+    0 12px 24px rgba(5,18,1,0.3);
+}
+.ceo-card h3{
+  font-family:var(--font-d);font-size:24px;font-weight:800;
+  margin-bottom:6px;position:relative;
+}
+.ceo-title{
+  font-size:11px;letter-spacing:2.5px;color:var(--light);
+  text-transform:uppercase;margin-bottom:20px;position:relative;
+}
+.ceo-card>p{
+  font-size:14px;line-height:1.75;color:rgba(234,243,222,0.8);
+  position:relative;
+}
+.ceo-contact{
+  margin-top:24px;position:relative;
+  display:flex;flex-direction:column;gap:10px;
+}
+.ceo-contact-item{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:12px;color:rgba(234,243,222,0.6);
+}
+.ceo-contact-item svg{
+  width:14px;height:14px;stroke:var(--light);fill:none;
+  flex-shrink:0;margin-top:1px;
+}
+
+.skills-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  padding:0 60px 100px;
+}
+.skill-item{
+  background:var(--cream);border-radius:14px;padding:22px 24px;
+  border:1px solid rgba(99,153,34,0.1);
+  display:flex;align-items:center;gap:14px;
+  transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style:preserve-3d;
+  box-shadow:0 4px 0 rgba(99,153,34,0.12);
+  position:relative;overflow:hidden;
+}
+.skill-item::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(99,153,34,0.06),transparent);
+  opacity:0;transition:opacity 0.3s;border-radius:14px;
+}
+.skill-item:hover::before{opacity:1;}
+.skill-item:hover{
+  transform:translateY(-4px) rotateX(6deg);
+  box-shadow:
+    0 8px 0 rgba(99,153,34,0.18),
+    0 16px 32px rgba(23,52,4,0.1);
+}
+.skill-dot{
+  width:10px;height:10px;border-radius:50%;background:var(--brand);
+  flex-shrink:0;box-shadow:0 0 8px rgba(99,153,34,0.5);
+}
+.skill-item span{
+  font-family:var(--font-d);font-size:14px;font-weight:600;
+}
+
+/* ══════════════════════
+   SERVICES
+══════════════════════ */
+#services{min-height:100vh;padding-top:100px;background:var(--cream);}
+.services-full{padding:80px 60px;}
+
+.service-row{
+  display:grid;grid-template-columns:100px 1fr 1fr;gap:50px;
+  align-items:start;padding:50px 40px;background:var(--white);
+  border:1px solid rgba(99,153,34,0.1);
+  transition:all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius:24px;transform-style:preserve-3d;
+  margin-bottom:30px;
+  box-shadow:0 8px 24px rgba(13,38,3,0.04);
+}
+.service-row:hover{
+  transform:translateX(12px) translateY(-4px);
+  box-shadow:
+    0 20px 40px rgba(13,38,3,0.1),
+    -6px 0 0 var(--brand);
+  border-color:rgba(99,153,34,0.3);
+}
+
+.s-num{
+  font-family:var(--font-d);font-size:28px;
+  color:transparent;-webkit-text-stroke:1px var(--brand);
+  letter-spacing:2px;font-weight:800;transition:all 0.4s;
+}
+.service-row:hover .s-num{
+  color:var(--brand);-webkit-text-stroke:0;
+  transform:scale(1.1) translateZ(15px);
+}
+
+.s-info h3{
+  font-family:var(--font-d);font-size:26px;font-weight:800;
+  margin-bottom:16px;color:var(--green);
+}
+.s-info p{
+  font-size:15px;line-height:1.8;color:var(--gray);
+}
+
+.s-tags{
+  display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;
+}
+.s-tag{
+  background:var(--cream);border:1px solid rgba(99,153,34,0.2);
+  color:var(--brand);font-size:10px;letter-spacing:1.5px;
+  padding:6px 14px;border-radius:100px;font-weight:600;
+  text-transform:uppercase;transition:all 0.3s;
+}
+.service-row:hover .s-tag{
+  background:var(--brand);color:var(--white);
+  box-shadow:0 4px 10px rgba(99,153,34,0.3);
+}
+
+.s-detail{padding-top:10px;}
+.s-detail h4{
+  font-family:var(--font-d);font-size:12px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--dark);margin-bottom:16px;
+}
+.s-detail ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.s-detail ul li{
+  font-size:14px;color:var(--gray);display:flex;
+  gap:12px;align-items:flex-start;font-weight:500;
+}
+.s-detail ul li::before{
+  content:'✓';color:var(--white);background:var(--brand);
+  width:18px;height:18px;display:flex;align-items:center;
+  justify-content:center;border-radius:50%;flex-shrink:0;
+  font-size:10px;font-weight:bold;
+}
+
+.pricing-box{
+  background:linear-gradient(135deg,var(--green),var(--brand));
+  color:var(--white);padding:16px 20px;border-radius:12px;
+  margin-top:20px;font-size:13px;
+  box-shadow:0 6px 0 rgba(5,18,1,0.4);
+  transition:transform 0.3s,box-shadow 0.3s;
+}
+.pricing-box:hover{
+  transform:translateY(-3px);
+  box-shadow:0 9px 0 rgba(5,18,1,0.4), 0 16px 32px rgba(99,153,34,0.3);
+}
+.pricing-box span{
+  color:var(--light);font-family:var(--font-d);
+  font-size:18px;font-weight:800;
+}
+
+/* ══════════════════════
+   CONTACT
+══════════════════════ */
+#contact{min-height:100vh;padding-top:100px;}
+.contact-wrap{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:calc(100vh - 100px);
+}
+.contact-left{
+  padding:80px 60px;background:var(--green);
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.contact-left::before{
+  content:'';position:absolute;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(99,153,34,0.2),transparent);
+  top:-200px;right:-200px;border-radius:50%;
+}
+.contact-left::after{
+  content:'';position:absolute;width:300px;height:300px;
+  border:1px solid rgba(99,153,34,0.1);border-radius:50%;
+  bottom:-80px;left:30%;
+}
+.contact-left .section-label{background:var(--light);color:var(--green);}
+.contact-left h1{
+  font-family:var(--font-d);font-size:clamp(26px,3vw,44px);
+  font-weight:800;color:var(--white);margin-bottom:18px;
+  line-height:1.1;position:relative;z-index:1;
+}
+.contact-left>p{
+  color:rgba(234,243,222,0.7);font-size:15px;line-height:1.75;
+  margin-bottom:44px;font-weight:400;position:relative;z-index:1;
+}
+
+.contact-info{
+  display:flex;flex-direction:column;gap:20px;
+  position:relative;z-index:1;
+}
+.c-item{display:flex;gap:16px;align-items:flex-start;}
+.c-icon{
+  width:42px;height:42px;border-radius:12px;
+  background:rgba(234,243,222,0.06);border:1px solid rgba(234,243,222,0.1);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all 0.4s;transform-style:preserve-3d;
+}
+.c-item:hover .c-icon{
+  transform:rotateY(25deg) rotateX(10deg);
+  background:rgba(99,153,34,0.2);border-color:rgba(99,153,34,0.3);
+}
+.c-icon svg{width:16px;height:16px;stroke:var(--light);fill:none;}
+.c-text{font-size:13px;}
+.c-text strong{
+  display:block;color:var(--white);font-family:var(--font-d);
+  font-weight:600;margin-bottom:3px;font-size:14px;
+}
+.c-text span{color:rgba(234,243,222,0.5);font-size:12px;line-height:1.5;}
+
+.contact-right{
+  padding:80px 60px;display:flex;flex-direction:column;
+  justify-content:center;background:var(--white);
+}
+.contact-right h2{
+  font-family:var(--font-d);font-size:28px;font-weight:800;
+  margin-bottom:32px;
+}
+
+.form-group{margin-bottom:18px;}
+.form-group label{
+  display:block;font-size:10px;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--gray);margin-bottom:8px;
+  font-weight:600;
+}
+.form-group input,.form-group select,.form-group textarea{
+  width:100%;padding:14px 16px;border:2px solid rgba(23,52,4,0.1);
+  border-radius:10px;font-family:var(--font-b);font-size:14px;
+  color:var(--green);background:var(--white);outline:none;
+  transition:all 0.3s;appearance:none;
+}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  border-color:var(--brand);
+  box-shadow:0 0 0 4px rgba(99,153,34,0.1);
+  transform:translateY(-1px);background:white;
+}
+.form-group textarea{resize:vertical;min-height:120px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+.btn-submit{
+  width:100%;background:linear-gradient(135deg,var(--green),var(--brand));
+  color:var(--white);border:none;padding:16px;border-radius:10px;
+  font-family:var(--font-d);font-weight:700;font-size:12px;
+  letter-spacing:2.5px;text-transform:uppercase;
+  transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 6px 0 rgba(5,18,1,0.4);position:relative;overflow:hidden;
+}
+.btn-submit::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.1),transparent);
+}
+.btn-submit:hover{
+  transform:translateY(-3px);
+  box-shadow:0 9px 0 rgba(5,18,1,0.4), 0 16px 32px rgba(99,153,34,0.3);
+}
+.btn-submit:active{
+  transform:translateY(2px);
+  box-shadow:0 4px 0 rgba(5,18,1,0.4);
+}
+.form-note{
+  font-size:11px;color:var(--gray);margin-top:12px;text-align:center;
+}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--dark);padding:40px 60px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:20px;border-top:4px solid var(--brand);
+}
+.footer-brand{
+  font-family:var(--font-d);font-size:20px;font-weight:800;
+  letter-spacing:4px;color:var(--white);
+}
+.footer-links{display:flex;gap:30px;}
+.footer-links a{
+  font-size:12px;color:rgba(234,243,222,0.5);text-transform:uppercase;
+  font-weight:600;text-decoration:none;letter-spacing:2px;
+  transition:color 0.3s;
+}
+.footer-links a:hover{color:var(--light);}
+.footer-copy{font-size:12px;color:rgba(234,243,222,0.3);}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1200px){
+  .services-grid{grid-template-columns:repeat(2,1fr);}
+  .orbital-system .orbit-3{display:none;}
+}
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  .hero{grid-template-columns:1fr;padding-top:100px;}
+  .hero-right{display:none;}
+  .hero-left,.services-preview,.why-us,.process,.contact-left,.contact-right,
+  .page-hero,.services-full,.skills-grid{padding-left:24px;padding-right:24px;}
+  .cta-banner{margin:40px 24px 60px;padding:40px 30px;}
+  .services-grid{grid-template-columns:1fr;}
+  .why-grid,.process-steps{grid-template-columns:1fr 1fr;}
+  .about-grid,.contact-wrap,.form-row{grid-template-columns:1fr;}
+  .skills-grid{grid-template-columns:1fr;}
+  .service-row{grid-template-columns:1fr;gap:30px;}
+  .s-num{display:none;}
+  footer{flex-direction:column;text-align:center;padding:28px 24px;}
+  
+  /* Mobile cursor disable */
+  #cursorDot,#cursorRing,.cursor-glow{display:none !important;}
+}
+</style>
+</head>
+<body>
+
+<div id="cursorDot"></div>
+<div id="cursorRing"></div>
+<div class="cursor-glow" id="glow"></div>
+
+<div id="loader">
+  <div class="loader-logo">LOGIXA</div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-text">Loading Premium Experience...</div>
+</div>
+
+<nav id="navbar">
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-icon">
+      <svg width="24" height="24" viewBox="0 0 40 40" fill="none">
+        <rect x="6" y="7" width="6" height="24" rx="2" fill="#EAF3DE"/>
+        <rect x="6" y="25" width="18" height="6" rx="2" fill="#EAF3DE"/>
+        <circle cx="31" cy="12" r="5" fill="#639922"/>
+        <circle cx="22" cy="12" r="3.5" fill="#97C459"/>
+        <line x1="22" y1="12" x2="31" y2="12" stroke="#639922" stroke-width="2"/>
+        <circle cx="31" cy="21" r="3.5" fill="#97C459"/>
+        <line x1="31" y1="12" x2="31" y2="21" stroke="#639922" stroke-width="2"/>
+      </svg>
+    </div>
+    <span class="nav-brand">LOGIXA</span>
+  </div>
+  <div class="nav-links">
+    <a href="#" onclick="showPage('home');return false;" id="nav-home" class="active">Home</a>
+    <a href="#" onclick="showPage('about');return false;" id="nav-about">About</a>
+    <a href="#" onclick="showPage('services');return false;" id="nav-services">Services</a>
+    <a href="#" onclick="showPage('contact');return false;" id="nav-contact" class="nav-cta">Get a Quote</a>
+  </div>
+</nav>
+
+<section id="home" class="active">
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-tag">
+        <div class="pulse-dot"></div>
+        Available for Premium Projects
+      </div>
+      <h1>We Build <em>Learning</em><br/>Experiences<br/>That Stick.</h1>
+      <p>Transform your corporate training into immersive 3D eLearning experiences using cutting-edge Articulate Storyline 360 development. Interactive, adaptive, and results-driven solutions.</p>
+      <div class="hero-btns">
+        <a href="#" class="btn-primary" onclick="showPage('services');return false;">
+          Explore Services ↗
+        </a>
+        <a href="#" class="btn-secondary" onclick="showPage('contact');return false;">
+          Get Free Consultation
+        </a>
+      </div>
+      <div class="hero-metrics">
+        <div class="metric">
+          <div class="metric-num">7+</div>
+          <div class="metric-label">Years Experience</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num">100+</div>
+          <div class="metric-label">Courses Built</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num">98%</div>
+          <div class="metric-label">Client Satisfaction</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num">48h</div>
+          <div class="metric-label">Fast Turnaround</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="orbital-system">
+        <div class="orbit orbit-1"><div class="orbit-dot"></div></div>
+        <div class="orbit orbit-2"><div class="orbit-dot orbit-dot-2"></div></div>
+        <div class="orbit orbit-3"></div>
+      </div>
+
+      <div class="hero-3d-scene">
+        <div class="cube-wrap">
+          <div class="cube-face front">
+            <div class="face-content">
+              <div class="fname">LOGIXA</div>
+              <div class="ftag">3D STUDIO</div>
+            </div>
+          </div>
+          <div class="cube-face back">
+            <div class="face-content">
+              <div class="fname">Articulate 360</div>
+              <div class="ftag">MASTER CERTIFIED</div>
+            </div>
+          </div>
+          <div class="cube-face right">
+            <div class="face-content">
+              <div class="fname">SCORM</div>
+              <div class="ftag">& xAPI READY</div>
+            </div>
+          </div>
+          <div class="cube-face left">
+            <div class="face-content">
+              <div class="fname">Adaptive</div>
+              <div class="ftag">LEARNING PATHS</div>
+            </div>
+          </div>
+          <div class="cube-face top">
+            <div class="face-content">
+              <div class="fname">100+</div>
+              <div class="ftag">COURSES DELIVERED</div>
+            </div>
+          </div>
+          <div class="cube-face bottom">
+            <div class="face-content">
+              <div class="fname">3D</div>
+              <div class="ftag">SIMULATIONS</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="float-card float-card-1">
+        <div class="card-header">
+          <div class="card-icon">🎯</div>
+          <div class="card-title">Articulate 360 Expert</div>
+        </div>
+        <div class="card-desc">Advanced triggers, variables, and complex branching scenarios development.</div>
+        <div class="card-badge"><div class="badge-dot"></div>7+ Years Experience</div>
+      </div>
+
+      <div class="float-card float-card-2">
+        <div class="card-header">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">SCORM & xAPI Ready</div>
+        </div>
+        <div class="card-desc">Seamless integration with all major LMS platforms including Workday and Cornerstone.</div>
+        <div class="card-badge"><div class="badge-dot"></div>100% Compatible</div>
+      </div>
+
+      <div class="float-card float-card-3">
+        <div class="card-header">
+          <div class="card-icon">🎮</div>
+          <div class="card-title">Gamified Learning</div>
+        </div>
+        <div class="card-desc">Points, badges, leaderboards, and immersive 3D simulations for maximum engagement.</div>
+        <div class="card-badge"><div class="badge-dot"></div>Next-Gen Training</div>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">7+</div>
+          <div class="stat-label">Years Exp</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100+</div>
+          <div class="stat-label">Courses Built</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">98%</div>
+          <div class="stat-label">Success Rate</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Global Clients</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tools-strip">
+    <span class="tools-label">Powered By</span>
+    <div class="tools-list">
+      <span class="tool-tag">Articulate Storyline 360</span>
+      <span class="tool-sep">·</span>
+      <span class="tool-tag">SCORM 1.2 & 2004</span>
+      <span class="tool-sep">·</span>
+      <span class="tool-tag">xAPI (Tin Can)</span>
+      <span class="tool-sep">·</span>
+      <span class="tool-tag">Vyond Animation</span>
+      <span class="tool-sep">·</span>
+      <span class="tool-tag">Camtasia Studio</span>
+      <span class="tool-sep">·</span>
+      <span class="tool-tag">Adobe Captivate</span>
+    </div>
+  </div>
+
+  <div class="services-preview">
+    <div style="text-align:center;">
+      <p class="section-label">What We Do</p>
+      <h2 class="section-title">Complete eLearning Solutions</h2>
+      <p class="section-desc">From adaptive learning paths to immersive 3D simulations — we deliver next-generation training experiences that drive real business results.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card" onclick="showPage('services');return false;">
+        <div class="service-num">01</div>
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EAF3DE" stroke-width="2" stroke-linecap="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <h3>Adaptive Learning</h3>
+        <p>Intelligent pathways that automatically adjust content based on learner performance, ensuring personalized learning experiences at scale.</p>
+        <div class="service-arrow">
+          <svg viewBox="0 0 24 24" stroke-linecap="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="showPage('services');return false;">
+        <div class="service-num">02</div>
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EAF3DE" stroke-width="2" stroke-linecap="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/>
+          </svg>
+        </div>
+        <h3>Off-the-Shelf Courses</h3>
+        <p>Ready-to-deploy premium modules for soft skills, leadership, and compliance training — fully brandable and LMS-ready.</p>
+        <div class="service-arrow">
+          <svg viewBox="0 0 24 24" stroke-linecap="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="showPage('services');return false;">
+        <div class="service-num">03</div>
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EAF3DE" stroke-width="2" stroke-linecap="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h3>Compliance Training</h3>
+        <p>Transform mandatory regulatory training into engaging experiences with full SCORM tracking and audit-ready reporting.</p>
+        <div class="service-arrow">
+          <svg viewBox="0 0 24 24" stroke-linecap="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="showPage('services');return false;">
+        <div class="service-num">04</div>
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EAF3DE" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+          </svg>
+        </div>
+        <h3>Scenario-Based Learning</h3>
+        <p>Immersive branching scenarios where learners make real-world decisions and experience realistic consequences.</p>
+        <div class="service-arrow">
+          <svg viewBox="0 0 24 24" stroke-linecap="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="showPage('services');return false;">
+        <div class="service-num">05</div>
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EAF3DE" stroke-width="2" stroke-linecap="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+        </div>
+        <h3>Simulation Learning</h3>
+        <p>Safe, interactive software and system simulations with Try, Test, and Practice modes for hands-on skill development.</p>
+        <div class="service-arrow">
+          <svg viewBox="0 0 24 24" stroke-linecap="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="service-card" onclick="showPage('services');return false;">
+        <div class="service-num">06</div>
+        <div class="service-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#EAF3DE" stroke-width="2" stroke-linecap="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </div>
+        <h3>Gamification</h3>
+        <p>Points, badges, leaderboards, and interactive challenges designed to maximize engagement and completion rates.</p>
+        <div class="service-arrow">
+          <svg viewBox="0 0 24 24" stroke-linecap="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:50px;">
+      <a href="#" class="btn-primary" onclick="showPage('services');return false;">
+        View All Services ↗
+      </a>
+    </div>
+  </div>
+
+  <div class="why-us">
+    <div style="text-align:center;">
+      <p class="section-label">Why LOGIXA</p>
+      <h2 class="section-title">The Premium Advantage</h2>
+      <p class="section-desc">Senior-level expertise, cutting-edge technology, and a commitment to excellence that shows in every pixel.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="why-num">7+</div>
+        <h4>Years of Mastery</h4>
+        <p>Senior-level Articulate 360 development with global enterprise delivery experience.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-num">48h</div>
+        <h4>Rapid Prototyping</h4>
+        <p>Quick turnaround on prototypes and revisions to meet your critical deadlines.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-num">100%</div>
+        <h4>LMS Integration</h4>
+        <p>Flawless SCORM 1.2, 2004, and xAPI compatibility with all major platforms.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-num">∞</div>
+        <h4>Unlimited Revisions</h4>
+        <p>We iterate until your course is absolutely perfect — no additional charges.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="process">
+    <div style="text-align:center;">
+      <p class="section-label">Our Process</p>
+      <h2 class="section-title">Simple 4-Step Journey</h2>
+      <p class="section-desc">From initial consultation to final deployment — a streamlined process designed for clarity, speed, and exceptional results.</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-line"></div>
+      <div class="process-step">
+        <div class="step-circle">1</div>
+        <h4>Discovery</h4>
+        <p>Deep-dive consultation to understand your objectives, audience, and technical requirements.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-circle">2</div>
+        <h4>Design</h4>
+        <p>Storyboard, script, and interactive prototype shared for your review and approval.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-circle">3</div>
+        <h4>Develop</h4>
+        <p>Full course build in Articulate Storyline with custom interactions and media integration.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-circle">4</div>
+        <h4>Deploy</h4>
+        <p>SCORM/xAPI package delivery with LMS testing and post-launch support.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-banner">
+    <div class="cta-content">
+      <h2>Ready to transform your training into immersive 3D experiences?</h2>
+      <p>Book a free 30-minute strategy consultation with our experts.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="#" class="btn-primary" onclick="showPage('contact');return false;" style="background:var(--white);color:var(--green);box-shadow:0 6px 0 rgba(234,243,222,0.4);">
+        Start Your Project ↗
+      </a>
+      <div class="ceo-badge">
+        <div class="ceo-avatar">AC</div>
+        <div class="ceo-info">
+          <strong>Aman Chaudhary</strong>
+          <span>CEO & Lead Developer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-brand">LOGIXA</span>
+    <div class="footer-links">
+      <a href="#" onclick="showPage('home');return false;">Home</a>
+      <a href="#" onclick="showPage('about');return false;">About</a>
+      <a href="#" onclick="showPage('services');return false;">Services</a>
+      <a href="#" onclick="showPage('contact');return false;">Contact</a>
+    </div>
+    <span class="footer-copy">© 2026 LOGIXA. All rights reserved.</span>
+  </footer>
+</section>
+
+<section id="about">
+  <div class="page-hero">
+    <p class="section-label">About Us</p>
+    <h1>We are <em>LOGIXA</em> —<br/>Your Premium eLearning Partner.</h1>
+    <p>A specialized 3D eLearning studio built on 7+ years of Articulate 360 mastery, delivering world-class training experiences for global enterprises and Fortune 500 companies.</p>
+  </div>
+
+  <div class="about-grid">
+    <div class="about-text">
+      <h2>Our Story</h2>
+      <p>LOGIXA was founded with one clear mission — to revolutionize corporate learning through immersive 3D experiences and cutting-edge instructional design. We combine deep technical expertise with creative excellence to produce courses that learners genuinely enjoy completing.</p>
+      <p>With 7+ years of hands-on Articulate Storyline experience, we've partnered with L&D teams across Healthcare, BFSI, Technology, and Manufacturing sectors, building everything from compliance modules to complex simulation-based training programs.</p>
+      <p>We operate as a boutique studio — meaning every project receives focused, senior-level attention from discovery to deployment. No junior developers, no outsourcing, no compromises on quality.</p>
+    </div>
+    <div class="ceo-card">
+      <div class="ceo-avatar-lg">AC</div>
+      <h3>Aman Chaudhary</h3>
+      <div class="ceo-title">Founder & CEO</div>
+      <p>Senior Articulate 360 developer and certified instructional designer with 7+ years of experience building eLearning for global clients. Specialized in interactive Storyline development, adaptive learning systems, SCORM packaging, and 3D simulation-based training.</p>
+      <div class="ceo-contact">
+        <div class="ceo-contact-item">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          amanmediasolution@gmail.com
+        </div>
+        <div class="ceo-contact-item">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          Chaudhary Tower, Kuti, Hapur, UP 245205, India
+        </div>
+      </div>
+      <div class="big-letter">L</div>
+    </div>
+  </div>
+
+  <div style="padding:0 60px 36px;">
+    <p class="section-label">Our Expertise</p>
+    <h2 style="font-family:var(--font-d);font-size:clamp(22px,3vw,36px);font-weight:800;margin-bottom:32px;">Tools & Technologies</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-item"><div class="skill-dot"></div><span>Articulate Storyline 360</span></div>
+    <div class="skill-item"><div class="skill-dot"></div><span>SCORM 1.2 & 2004</span></div>
+    <div class="skill-item"><div class="skill-dot"></div><span>xAPI / Tin Can</span></div>
+    <div class="skill-item"><div class="skill-dot"></div><span>Adaptive Learning Design</span></div>
+    <div class="skill-item"><div class="skill-dot"></div><span>Scenario-Based Learning</span></div>
+    <div class="skill-item"><div class="skill-dot"></div><span>3D Simulation Training</span></div>
+    <div class="skill-item"><div class="skill-dot"></div><span>Vyond Animation</span></div>
+    <div class="skill-item"><div class="skill-dot"></div><span>Camtasia Studio</span></div>
+    <div class="skill-item"><div class="skill-dot"></div><span>LMS Integration</span></div>
+  </div>
+
+  <footer>
+    <span class="footer-brand">LOGIXA</span>
+    <div class="footer-links">
+      <a href="#" onclick="showPage('home');return false;">Home</a>
+      <a href="#" onclick="showPage('about');return false;">About</a>
+      <a href="#" onclick="showPage('services');return false;">Services</a>
+      <a href="#" onclick="showPage('contact');return false;">Contact</a>
+    </div>
+    <span class="footer-copy">© 2026 LOGIXA. All rights reserved.</span>
+  </footer>
+</section>
+
+<section id="services">
+  <div class="services-full">
+    <p class="section-label">Our Services</p>
+    <h1 style="font-family:var(--font-d);font-size:clamp(34px,5vw,62px);font-weight:800;letter-spacing:-1.5px;margin-bottom:20px;line-height:1.03;">Premium eLearning Solutions</h1>
+    <p style="font-size:17px;color:var(--gray);max-width:600px;line-height:1.7;font-weight:400;margin-bottom:80px;">End-to-end eLearning development services — from adaptive learning systems to immersive 3D simulations, delivered with enterprise-grade quality and precision.</p>
+
+    <div class="service-row">
+      <div class="s-num">01</div>
+      <div class="s-info">
+        <h3>Adaptive Learning Systems</h3>
+        <p>Intelligent learning pathways that dynamically adjust content based on learner performance, prior knowledge, and learning preferences. Built with advanced Storyline variables and branching logic for truly personalized experiences at enterprise scale.</p>
+        <div class="s-tags">
+          <span class="s-tag">Dynamic Pathing</span>
+          <span class="s-tag">Pre-Assessment</span>
+          <span class="s-tag">AI Logic</span>
+          <span class="s-tag">Personalized</span>
+        </div>
+      </div>
+      <div class="s-detail">
+        <h4>What's Included</h4>
+        <ul>
+          <li>Learner profiling and skill assessment</li>
+          <li>Dynamic content delivery system</li>
+          <li>Personalized learning pathways</li>
+          <li>Advanced progress tracking</li>
+          <li>Performance analytics integration</li>
+          <li>SCORM/xAPI compliance</li>
+        </ul>
+        <div class="pricing-box">Starting at <span>$1,600</span> per course</div>
+      </div>
+    </div>
+
+    <div class="service-row">
+      <div class="s-num">02</div>
+      <div class="s-info">
+        <h3>Off-the-Shelf Course Library</h3>
+        <p>Premium, ready-to-deploy eLearning modules covering essential corporate topics like leadership, communication, time management, and soft skills. Fully customizable with your branding and instantly LMS-ready.</p>
+        <div class="s-tags">
+          <span class="s-tag">Ready-to-Deploy</span>
+          <span class="s-tag">Custom Branding</span>
+          <span class="s-tag">Cost-Effective</span>
+          <span class="s-tag">Instant Access</span>
+        </div>
+      </div>
+      <div class="s-detail">
+        <h4>What's Included</h4>
+        <ul>
+          <li>50+ premium course templates</li>
+          <li>Full brand customization</li>
+          <li>Professional voice-over</li>
+          <li>Interactive assessments</li>
+          <li>Mobile-responsive design</li>
+          <li>Instant SCORM download</li>
+        </ul>
+        <div class="pricing-box">Starting at <span>$249</span> per module</div>
+      </div>
+    </div>
+
+    <div class="service-row">
+      <div class="s-num">03</div>
+      <div class="s-info">
+        <h3>Compliance Training</h3>
+        <p>Transform mandatory regulatory training into engaging, scenario-driven experiences. Covers GDPR, HIPAA, workplace safety, anti-harassment, and corporate governance with full audit trail and completion tracking.</p>
+        <div class="s-tags">
+          <span class="s-tag">Regulatory</span>
+          <span class="s-tag">Audit-Ready</span>
+          <span class="s-tag">Mandatory</span>
+          <span class="s-tag">Trackable</span>
+        </div>
+      </div>
+      <div class="s-detail">
+        <h4>What's Included</h4>
+        <ul>
+          <li>Regulatory content research</li>
+          <li>Scenario-based case studies</li>
+          <li>Mandatory assessment gates</li>
+          <li>Completion certificates</li>
+          <li>Full SCORM tracking</li>
+          <li>Annual content updates</li>
+        </ul>
+        <div class="pricing-box">Starting at <span>$899</span> per course</div>
+      </div>
+    </div>
+
+    <div class="service-row">
+      <div class="s-num">04</div>
+      <div class="s-info">
+        <h3>Scenario-Based Learning</h3>
+        <p>Immersive, narrative-driven learning experiences with complex branching scenarios. Learners face realistic workplace challenges, make critical decisions, and experience consequences in a safe learning environment.</p>
+        <div class="s-tags">
+          <span class="s-tag">Branching</span>
+          <span class="s-tag">Decision Trees</span>
+          <span class="s-tag">Consequences</span>
+          <span class="s-tag">Immersive</span>
+        </div>
+      </div>
+      <div class="s-detail">
+        <h4>What's Included</h4>
+        <ul>
+          <li>Complex scenario scripting</li>
+          <li>Multi-path decision architecture</li>
+          <li>Character development and dialogue</li>
+          <li>Realistic consequence modeling</li>
+          <li>Performance scoring system</li>
+          <li>Detailed feedback loops</li>
+        </ul>
+        <div class="pricing-box">Starting at <span>$1,299</span> per scenario</div>
+      </div>
+    </div>
+
+    <div class="service-row">
+      <div class="s-num">05</div>
+      <div class="s-info">
+        <h3>3D Simulation Learning</h3>
+        <p>High-fidelity software and system simulations with Show Me, Try Me, and Test Me modes. Perfect for ERP rollouts, software training, and complex procedural learning with risk-free practice environments.</p>
+        <div class="s-tags">
+          <span class="s-tag">3D Simulations</span>
+          <span class="s-tag">Software Training</span>
+          <span class="s-tag">Try Mode</span>
+          <span class="s-tag">Risk-Free</span>
+        </div>
+      </div>
+      <div class="s-detail">
+        <h4>What's Included</h4>
+        <ul>
+          <li>High-resolution screen capture</li>
+          <li>Interactive simulation modes</li>
+          <li>Step-by-step guidance</li>
+          <li>Error handling and hints</li>
+          <li>Performance tracking</li>
+          <li>Mobile-responsive output</li>
+        </ul>
+        <div class="pricing-box">Starting at <span>$1,099</span> per simulation</div>
+      </div>
+    </div>
+
+    <div class="service-row">
+      <div class="s-num">06</div>
+      <div class="s-info">
+        <h3>Gamification & Interactive Learning</h3>
+        <p>Transform traditional training into engaging game-like experiences with points, badges, leaderboards, and challenges. Includes escape room scenarios, puzzle-based learning, and competitive elements to maximize engagement.</p>
+        <div class="s-tags">
+          <span class="s-tag">Gamification</span>
+          <span class="s-tag">Points & Badges</span>
+          <span class="s-tag">Leaderboards</span>
+          <span class="s-tag">Engagement</span>
+        </div>
+      </div>
+      <div class="s-detail">
+        <h4>What's Included</h4>
+        <ul>
+          <li>Game mechanics design</li>
+          <li>Points and badge system</li>
+          <li>Interactive challenges</li>
+          <li>Leaderboard integration</li>
+          <li>Progress visualization</li>
+          <li>Achievement tracking</li>
+        </ul>
+        <div class="pricing-box">Starting at <span>$1,699</span> per game</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-banner" style="margin:0 60px 80px;">
+    <div class="cta-content">
+      <h2>Need a custom solution for your organization?</h2>
+      <p>Book a free consultation to discuss your specific training requirements.</p>
+    </div>
+    <div class="cta-actions">
+      <a href="#" class="btn-primary" onclick="showPage('contact');return false;" style="background:var(--white);color:var(--green);box-shadow:0 6px 0 rgba(234,243,222,0.4);">
+        Schedule Consultation ↗
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-brand">LOGIXA</span>
+    <div class="footer-links">
+      <a href="#" onclick="showPage('home');return false;">Home</a>
+      <a href="#" onclick="showPage('about');return false;">About</a>
+      <a href="#" onclick="showPage('services');return false;">Services</a>
+      <a href="#" onclick="showPage('contact');return false;">Contact</a>
+    </div>
+    <span class="footer-copy">© 2026 LOGIXA. All rights reserved.</span>
+  </footer>
+</section>
+
+<section id="contact">
+  <div class="contact-wrap">
+    <div class="contact-left">
+      <p class="section-label">Get In Touch</p>
+      <h1>Let's Build Something Extraordinary Together.</h1>
+      <p>Share your training challenges with us. We respond within 24 hours and offer a complimentary 30-minute strategy consultation with zero obligations.</p>
+      <div class="contact-info">
+        <div class="c-item">
+          <div class="c-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div class="c-text">
+            <strong>Email</strong>
+            <span>amanmediasolution@gmail.com</span>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <div class="c-text">
+            <strong>CEO & Founder</strong>
+            <span>Aman Chaudhary</span>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <div class="c-text">
+            <strong>Address</strong>
+            <span>Chaudhary Tower, Kuti<br/>Hapur, UP 245205, India</span>
+          </div>
+        </div>
+        <div class="c-item">
+          <div class="c-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div class="c-text">
+            <strong>Response Time</strong>
+            <span>Within 24 hours</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-right">
+      <h2>Tell Us About Your Training Needs</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="John Smith"/>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="john@company.com"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Company</label>
+          <input type="text" placeholder="Your Company"/>
+        </div>
+        <div class="form-group">
+          <label>Budget Range</label>
+          <select>
+            <option>Under $500</option>
+            <option>$500 – $1,500</option>
+            <option>$1,500 – $5,000</option>
+            <option>$5,000 – $15,000</option>
+            <option>$15,000+</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Service Required</label>
+        <select>
+          <option>Adaptive Learning Systems</option>
+          <option>Off-the-Shelf Courses</option>
+          <option>Compliance Training</option>
+          <option>Scenario-Based Learning</option>
+          <option>3D Simulation Learning</option>
+          <option>Gamification & Interactive Learning</option>
+          <option>Custom Articulate Storyline Development</option>
+          <option>Not sure — need consultation</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Project Details</label>
+        <textarea placeholder="Tell us about your training objectives, target audience, timeline, number of learners, current challenges, and any specific requirements..."></textarea>
+      </div>
+      <button class="btn-submit" onclick="submitForm(this)">
+        Send Message
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+      <p class="form-note">🔒 Your information is confidential and will never be shared with third parties.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+// ── LOADING SCREEN ──
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('hidden');
+  }, 2200);
+});
+
+// ── CUSTOM CURSOR IMPLEMENTATION ──
+const dot  = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+const glow = document.getElementById('glow');
+
+// Variables for mouse and tracking positions
+let mouseX = 0, mouseY = 0;
+let dotX = 0, dotY = 0;   
+let ringX  = 0, ringY  = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+  
+  // Glow moves instantly with the mouse
+  if(glow) {
+      glow.style.left = mouseX + 'px';
+      glow.style.top  = mouseY + 'px';
+  }
+});
+
+function animateCursor() {
+  // Dot tracking with slight lag
+  dotX += (mouseX - dotX) * 0.4;
+  dotY += (mouseY - dotY) * 0.4;
+  if(dot) {
+      dot.style.left = dotX + 'px';
+      dot.style.top  = dotY + 'px';
+  }
+
+  // Ring tracking with more lag so it follows behind the dot
+  ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) * 0.12;
+  if(ring) {
+      ring.style.left = ringX + 'px';
+      ring.style.top  = ringY + 'px';
+  }
+
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// ── CURSOR HOVER EFFECTS ──
+document.addEventListener('DOMContentLoaded', () => {
+  const interactiveElements = document.querySelectorAll('a, button, .service-card, .service-row, .why-item, .skill-item, .nav-logo, .process-step, .stat, .tool-tag, input, select, textarea, .ceo-card');
+  
+  interactiveElements.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      document.body.classList.add('cursor-hover');
+    });
+    el.addEventListener('mouseleave', () => {
+      document.body.classList.remove('cursor-hover');
+    });
+  });
+});
+
+// ── CURSOR CLICK EFFECT ──
+document.addEventListener('mousedown', () => {
+  document.body.classList.add('cursor-click');
+});
+document.addEventListener('mouseup', () => {
+  document.body.classList.remove('cursor-click');
+});
+
+// ── PAGE NAVIGATION ──
+function showPage(page) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const el = document.getElementById('nav-' + page);
+  if (el) el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── SCROLL EFFECTS ──
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// ── 3D CARD INTERACTIONS ──
+document.querySelectorAll('.service-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientY - rect.top - rect.height/2) / rect.height * -12;
+    const y = (e.clientX - rect.left - rect.width/2) / rect.width * 12;
+    card.style.transform = `translateY(-12px) rotateX(${x}deg) rotateY(${y}deg)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = '';
+  });
+});
+
+// ── FORM SUBMISSION ──
+function submitForm(btn) {
+  btn.innerHTML = `
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <polyline points="20 6 9 17 4 12"/>
+    </svg>
+    Message Sent! We'll respond within 24 hours.
+  `;
+  btn.style.background = 'linear-gradient(135deg,var(--brand),var(--accent))';
+  btn.style.pointerEvents = 'none';
+  btn.style.transform = 'translateY(0)';
+  btn.style.boxShadow = '0 4px 0 rgba(5,18,1,0.4)';
+}
+
+// ── PERFORMANCE OPTIMIZATION ──
+if (window.innerWidth <= 768) {
+  document.querySelectorAll('.orbit').forEach(orbit => {
+    orbit.style.animationDuration = '40s';
+  });
+}
+</script>
+</body>
+</html>
